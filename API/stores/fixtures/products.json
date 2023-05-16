@@ -1,0 +1,110 @@
+[
+   {
+      "model":"stores.product",
+      "pk":1,
+      "fields":{
+         "name":"Milk",
+         "description":"1L of fresh milk",
+         "price":0.75,
+         "store":1,
+         "image":"/products/2023/05/09/milk.png",
+         "tags":[5, 6, 7]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":2,
+      "fields":{
+         "name":"Samsung Galaxy S21",
+         "description":"128GB, 8GB RAM, Phantom Gray",
+         "price":899.99,
+         "store":2,
+         "image":"/products/2023/05/09/galaxy_s21.png",
+         "tags":[1, 2]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":3,
+      "fields":{
+         "name":"Women's T-shirt",
+         "description":"100% cotton, black, size S",
+         "price":19.99,
+         "store":3,
+         "image":"/products/2023/05/09/tshirt.png",
+         "tags":[8, 9, 13]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":4,
+      "fields":{
+         "name":"Toothpaste",
+         "description":"Cavity protection, mint flavor",
+         "price":2.99,
+         "store":1,
+         "image":"/products/2023/05/09/toothpaste.png",
+         "tags":[14]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":5,
+      "fields":{
+         "name":"MacBook Pro",
+         "description":"16-inch, 1TB SSD, Space Gray",
+         "price":2399.99,
+         "store":2,
+         "image":"/products/2023/05/09/macbook_pro.png",
+         "tags":[1, 3]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":6,
+      "fields":{
+         "name":"Men's Shoes",
+         "description":"Leather dress shoes, brown, size 10",
+         "price":89.99,
+         "store":3,
+         "image":"/products/2023/05/09/mens_shoes.png",
+         "tags":[8, 10, 12]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":7,
+      "fields":{
+         "name":"Aspirin",
+         "description":"Extra strength, 500mg",
+         "price":6.99,
+         "store":1,
+         "image":"/products/2023/05/09/aspirin.png",
+         "tags":[14]
+      }
+   },
+   {
+      "model": "stores.product",
+      "pk": 8,
+      "fields": {
+          "name": "Smart TV",
+          "description": "55-inch, 4K UHD, HDR, Roku TV",
+          "price": 799.99,
+          "store": 2,
+          "image": "/products/2023/05/09/smart_tv.png",
+         "tags":[1, 4]
+      }
+   },
+   {
+      "model":"stores.product",
+      "pk":9,
+      "fields":{
+         "name":"Women's Jeans",
+         "description":"High-rise skinny jeans, black, size 8",
+         "price":59.99,
+         "store":3,
+         "image":"/products/2023/05/09/womens_jeans.png",
+         "tags":[8, 11, 13]
+      }
+   }
+]
