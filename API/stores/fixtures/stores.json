@@ -1,0 +1,38 @@
+[
+   {
+      "model":"stores.store",
+      "pk":1,
+      "fields":{
+         "name":"Pingo Doce",
+         "slug":"pingo-doce",
+         "address":"Rua de Santa Catarina 333, 4000-447 Porto",
+         "phone_number":"+351 22 208 3800",
+         "image":"/stores/2023/05/09/pingo_doce_banner.jpg",
+         "type":"Grocery"
+      }
+   },
+   {
+      "model":"stores.store",
+      "pk":2,
+      "fields":{
+         "name":"Worten",
+         "slug":"worten",
+         "address":"Avenida da Liberdade 144, 1250-146 Lisboa",
+         "phone_number":"+351 21 358 0600",
+         "image":"/stores/2023/05/09/worten_banner.jpg",
+         "type":"Electronics"
+      }
+   },
+   {
+      "model":"stores.store",
+      "pk":3,
+      "fields":{
+         "name":"Zara",
+         "slug":"zara",
+         "address":"Rua Augusta 104, 1100-053 Lisboa",
+         "phone_number":"+351 21 325 8500",
+         "image":"/stores/2023/05/09/zara_banner.jpg",
+         "type":"Clothing"
+      }
+   }
+]
