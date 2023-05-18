@@ -3,7 +3,6 @@
     import { clickOutside, navigate } from "../../utils";
     import { getCookie } from "../../stores/store_cookies";
     import { afterNavigate } from "$app/navigation";
-    import { page } from "$app/stores";
     import { account } from "../../stores/store_account";
     import { orders, orderPrice } from "../../stores/store_cart"
 
@@ -93,7 +92,7 @@
     onMount(() => {
 
         // Check if the user is already logged in
-        const newPage = previousPage === $page.url.pathname ? '/' : previousPage;
+        const newPage = '/login'
         const access_token = getCookie('access_token')
         if (!access_token) {
             navigate(newPage)
