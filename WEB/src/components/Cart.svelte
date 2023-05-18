@@ -1,22 +1,13 @@
 <script>
    import CartProductCard from "./CartProductCard.svelte";
-   import { orders, orderCount } from "../stores/store_order"
-   import { onMount } from "svelte";
-    import { get } from "svelte/store";
+   import { orders, orderCount, orderPrice } from "../stores/store_cart"
 
    let orders_ = {};
    let totalPrice = 0;
 
-   const calculateTotalPrice = () => {
-      totalPrice = Object.entries(orders_).reduce((total, [key, value]) => {
-         const { price } = JSON.parse(key);
-         return total + value * price;
-      }, 0);
-   }
-
    orders.subscribe(value => {
       orders_ = value;
-      calculateTotalPrice();
+      totalPrice = $orderPrice
    });
 
 </script>
@@ -45,7 +36,7 @@
                <span>Subtotal:</span>
                <span class="money">{totalPrice.toFixed(2)}€</span>
             </h1>
-            <button class="btn-checkout">check out</button>
+            <a href="/checkout" class="btn-checkout">check out</a>
             <small>before taxes and shipping costs</small>
          </div>
       </div>
@@ -93,7 +84,7 @@
    }
    .cart a {
       text-decoration: none;
-      color: black !important;
+      color: black;
    }
    .btn-shopping {
       padding: 20px;
@@ -166,7 +157,7 @@
       text-transform: uppercase;
       cursor: pointer;
       background: #e91a47;
-      color: #fff;
+      color: #fff!important;
       text-decoration: none;
       text-align: center;
       vertical-align: middle;

@@ -1,5 +1,5 @@
 <script>
-    import { addToOrders } from "../stores/store_order";
+    import { addToOrders } from "../stores/store_cart";
     export let object;
 </script>
 

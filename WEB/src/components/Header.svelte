@@ -1,10 +1,9 @@
 <script>
-	import { page } from '$app/stores';
-	import github from '$lib/images/github.svg';
 	import shop from '$lib/images/shop.png';
 	import cart from '$lib/images/cart.png';
-
-	import { orderCount } from '../stores/store_order';
+	import { account, accountFirstName, logoutAccount } from '../stores/store_account';
+	import { orderCount } from '../stores/store_cart';
+    import { PUBLIC_BASE_URL, PUBLIC_STORES_PATH } from '$env/static/public';
 
 	let mobileActive = false;
 </script>
@@ -31,16 +30,16 @@
 				<ul class="menu-section">
 					<li><a href="/stores">Stores</a></li>
 					<div class="m-info">
-						<form class="search-form" action="/search">
-							<input type="text" placeholder="Search..." name="q" value="">
+						<form method="get" class="search-form" action="/stores">
+							<input type="search" placeholder="Search..." name="q" value="">
 						</form>
 						<a href="/register" class="auth-button">Sign Up</a>
 						<a href="/login" class="auth-button">Login</a>					 
 					</div>
           		</ul>
 			</nav>
-			<form class="search-form" action="/search">
-				<input type="text" placeholder="Search..." name="q" value="">
+			<form method="get" class="search-form" action="/stores">
+				<input type="search" placeholder="Search..." name="q" value="">
 			</form>
 		</div>
 		<div class="header-item-right">
@@ -50,8 +49,13 @@
 				  <span class="order-count">{$orderCount >= 10 ? '9+' : $orderCount}</span>
 				</a>
 			</div>
-			<a href="/register" class="auth-button">Sign Up</a>
-			<a href="/login" class="auth-button">Login</a>
+			{#if $account}
+				<span class="username">{$accountFirstName}</span> 
+				<button on:click={logoutAccount} class="auth-button">Logout</button>
+			{:else}
+				<a href="/register" class="auth-button">Sign Up</a>
+				<a href="/login" class="auth-button">Login</a>
+			{/if}
 		</div>
 	</div>
 </header>
@@ -172,7 +176,8 @@
 		margin: 0;
 		text-decoration: none;
 	}
-	a.auth-button {
+	.auth-button {
+		font-family: inherit;
 		letter-spacing: 1px;
 		width: 100px;
 		height: 36px;
@@ -181,7 +186,6 @@
 		font-weight: 400;
 		margin-right: 15px;
 		margin-left: 5px;
-		transition: all 0.15s ease;
 		display: inline-block;
 		text-align: center;
 		vertical-align: middle;
@@ -193,7 +197,7 @@
 		color: #fff;
 		transition: 0.2s cubic-bezier(0.05,0,0,1)
 	}
-	a.auth-button:hover {
+	.auth-button:hover {
 		background: white;
 		color: #e91a47;
 	}
@@ -203,11 +207,25 @@
 	.header .m-info {
 		display: none;
 	}
+	.username {
+		color: white;
+		letter-spacing: 1px;
+		height: 36px;
+		line-height: 36px;
+		font-size: 20px;
+		font-weight: 400;
+		margin-right: 15px;
+		margin-left: 5px;
+		display: inline-block;
+		text-align: center;
+		vertical-align: middle;
+		white-space: nowrap;
+	}
 	@media only screen and (max-width: 992px) {
 		.header-item-center, .header-item-right {
 			width: initial;
 		}
-		.header-item-right a.auth-button, .header-item-center .search-form {
+		.header-item-right .auth-button, .header-item-center .search-form {
 			display: none;
 		}
 		.header .menu-mobile-trigger span:nth-child(1) {
@@ -342,7 +360,7 @@
 		.header .m-info .search-form input {
 			width: 100%;
 		}
-		.header .m-info a.auth-button {
+		.header .m-info .auth-button {
 			width: 75%;
 			height: 36px;
 			line-height: 36px;

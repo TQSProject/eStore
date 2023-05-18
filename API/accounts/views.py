@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
@@ -25,6 +26,22 @@ def register_user(request):
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
-            return Response({'error': 'An error occurred while registering the user.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'An error occurred while registering the user.'},
+                            status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'error': 'Please provide all required information.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@login_required
+def user_data(request):
+    user = request.user
+    data = {
+        'id': user.id,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name
+        # Include any other desired user data fields
+    }
+    return Response(data)

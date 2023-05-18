@@ -4,16 +4,20 @@
     import StoreCard from "../../components/StoreCard.svelte";
     import {PUBLIC_BASE_URL, PUBLIC_STORES_PATH} from '$env/static/public'
 
-    const url = `${PUBLIC_BASE_URL}${PUBLIC_STORES_PATH}`;
+    let url = `${PUBLIC_BASE_URL}${PUBLIC_STORES_PATH}`;
 
     onMount(async () => {
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('q');
+        if (query) {
+            url = `${url}?q=${query}`;
+        }
+
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             stores.set(data);
         }).catch(error => {
-            console.log(error);
             return [];
         });
     });

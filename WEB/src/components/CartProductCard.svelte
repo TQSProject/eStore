@@ -1,7 +1,10 @@
 <script>
    export let product;
    export let count;
-   import {removeFromOrders, updateOrderCount} from '../stores/store_order'
+   import {removeFromOrders, updateOrderCount} from '../stores/store_cart'
+   import { getStoreSlug } from '../utils';
+
+   const store_slug = getStoreSlug(product.store)
 </script>
 <tr class="item">
   <td class="img">
@@ -10,8 +13,9 @@
      </div>
   </td>
   <td class="desc" colspan="2">
-      <span>{product.name}</span>
+      <span class="name">{product.name}</span>
       <br>
+      <a href="/stores/{store_slug}" class="store">{product.store}</a>
       <br>
       <button class="remove-from-cart" on:click={() => removeFromOrders(product)}>Remove</button>
   </td>
@@ -25,7 +29,7 @@
               <path fill="#444" d="M17.543 11.029H2.1A1.032 1.032 0 011.071 10c0-.566.463-1.029 1.029-1.029h15.443c.566 0 1.029.463 1.029 1.029 0 .566-.463 1.029-1.029 1.029z"></path>
            </svg>
         </button>
-        <input class="quantity-input" type="number" min="1" size="4" pattern="[0-9]*" autocomplete="off" value="{count}">
+        <input disabled class="quantity-input" type="number" min="1" size="4" pattern="[0-9]*" autocomplete="off" value="{count}">
         <button class="quantity-plus" on:click={() => updateOrderCount(product, 1)}>
            <svg viewBox="0 0 20 20" class="icon icon-plus">
               <path fill="#444" d="M17.409 8.929h-6.695V2.258c0-.566-.506-1.029-1.071-1.029s-1.071.463-1.071 1.029v6.671H1.967C1.401 8.929.938 9.435.938 10s.463 1.071 1.029 1.071h6.605V17.7c0 .566.506 1.029 1.071 1.029s1.071-.463 1.071-1.029v-6.629h6.695c.566 0 1.029-.506 1.029-1.071s-.463-1.071-1.029-1.071z"></path>
@@ -36,7 +40,20 @@
 </tr>
 
 <style>
-     .quantity-selector {
+   .name {
+      font-weight: 400;
+   }
+   .store {
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px 0 1px;
+      color: rgba(0, 0, 0, .75);
+   }
+   .store:hover {
+      border-bottom: 1px solid #2b2b2b;
+      color: rgba(0, 0, 0, .85);
+   }
+   .quantity-selector {
       float: right;
       display: block;
       position: relative;
@@ -67,6 +84,7 @@
       padding-right: 10px;
    }
    input.quantity-input {
+      padding: 9px 28px;
       font-size: 1em;
       text-align: center;
       color: black !important;
