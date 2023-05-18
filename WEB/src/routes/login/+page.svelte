@@ -1,4 +1,55 @@
 <script>
+    import { PUBLIC_BASE_URL, PUBLIC_TOKEN_PATH } from "$env/static/public";
+    import { onMount } from "svelte";
+    import { updateAccount } from "../../stores/store_account";
+    import { getCookie, setCookie } from "../../stores/store_cookies";
+    import { navigate } from "../../utils";
+    import axios from "axios";
+    import { page } from "$app/stores";
+    import { afterNavigate } from "$app/navigation";
+
+    const url = `${PUBLIC_BASE_URL}${PUBLIC_TOKEN_PATH}`;
+
+    let previousPage = '/' ;
+
+    afterNavigate(({from}) => {
+        previousPage = from?.url.pathname || previousPage
+    }) 
+
+    const loginUser = async () => {
+        try {
+        const response = await axios.post(url, {
+            email,
+            password,
+        });
+
+        const { access: access_token } = response.data;
+
+        // Store the access token in a cookie
+        setCookie('access_token', access_token);
+
+        updateAccount();
+
+        // Redirect to the previous page or '/' if no previous page is available
+        const newPage = previousPage === $page.url.pathname ? '/' : previousPage;
+
+        navigate(newPage);
+        } catch (error) {
+            // Handle any errors during registration
+            console.error('Login error:', error);
+        }
+    };
+
+    let email = '';
+    let password = '';
+
+    onMount(() => {
+        // Check if the user is already logged in
+        const access_token = getCookie('access_token')
+            if (access_token) {
+                navigate()
+            }
+    });
 </script>
 
 <svelte:head>
@@ -12,14 +63,14 @@
             <div class="auth-content">
                 <div class="auth-form-wrapper">
                     <h2 class="theme">Login</h2>
-                    <form class="auth-form">
+                    <form class="auth-form" on:submit|preventDefault={loginUser}>
                         <div class="form-field">
                             <label for="email">Email</label>
                             <div class="input-ctn">
                                 <svg width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <path d="M27.2099 0.360535H1.66668C0.863837 0.360535 0.207031 1.01728 0.207031 1.82V17.8744C0.207031 18.677 0.863837 19.3339 1.66668 19.3339H27.2099C28.0127 19.3339 28.6696 18.6772 28.6696 17.8744V1.82C28.6695 1.01728 28.0127 0.360535 27.2099 0.360535ZM26.6621 1.45508L15.2779 9.99319C15.0732 10.1489 14.759 10.2464 14.4382 10.2449C14.1175 10.2464 13.8033 10.1489 13.5986 9.99319L2.21436 1.45508H26.6621ZM20.5811 10.5566L26.7844 18.2189C26.7907 18.2266 26.7983 18.2324 26.8049 18.2394H2.07166C2.07822 18.2321 2.08589 18.2266 2.09212 18.2189L8.2955 10.5566C8.48556 10.3216 8.44954 9.97712 8.21411 9.78663C7.97913 9.59658 7.63463 9.6326 7.44451 9.86762L1.30173 17.4552V2.13923L12.9421 10.8688C13.3797 11.1946 13.912 11.338 14.4382 11.3395C14.9636 11.3384 15.4964 11.195 15.9342 10.8688L27.5746 2.13923V17.455L21.432 9.86762C21.2419 9.63266 20.897 9.59653 20.6624 9.78663C20.427 9.97668 20.3909 10.3216 20.5811 10.5566Z" fill="#151515"></path>
                                 </svg>
-                                <input type="email" value="" name="email" id="email" placeholder="Type your email address" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus>
+                                <input type="email" bind:value="{email}" name="email" id="email" placeholder="Type your email address" spellcheck="false" autocomplete="off" autocapitalize="off">
                             </div>
                         </div>
                         <div class="form-field">
@@ -36,7 +87,7 @@
                                     </clipPath>
                                     </defs>
                                 </svg>
-                                <input type="password" value="" name="password" id="password" placeholder="Type your password">
+                                <input type="password" bind:value="{password}" name="password" id="password" placeholder="Type your password">
                             </div>
                         </div>
                         <div class="form-field action-bottom">

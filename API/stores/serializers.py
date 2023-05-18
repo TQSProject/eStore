@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Store, Product, ProductTag, Order, OrderProduct
+from .models import Store, Product, ProductTag
 
 
 class StoreSerializer(serializers.ModelSerializer):
@@ -32,16 +32,3 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.image.url)
-
-class OrderProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderProduct
-        fields = '__all__'
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    products = OrderProductSerializer(many=True)
-
-    class Meta:
-        model = Order
-        fields = '__all__'

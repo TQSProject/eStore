@@ -14,8 +14,8 @@ class SHUser(AbstractUser):
             "unique": _("This email address is already in use.")
         },
     )
-    first_name = models.CharField(_("First name"), max_length=30)
-    last_name = models.CharField(_("Last name"), max_length=150)
+    first_name = models.CharField(_("First name"), max_length=50)
+    last_name = models.CharField(_("Last name"), max_length=50)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
