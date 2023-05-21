@@ -164,7 +164,7 @@
         }
     }
 
-    const url = 
+    const url = "";
 
     async function postOrder() {
         try {
@@ -175,7 +175,7 @@
             phone_number
         });
 
-        const { access: access_token } = response.data;
+        const data = response.data;
         }
         catch (error) {
 
