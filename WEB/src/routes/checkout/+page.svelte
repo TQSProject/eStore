@@ -5,6 +5,7 @@
     import { afterNavigate } from "$app/navigation";
     import { account } from "../../stores/store_account";
     import { orders, orderPrice } from "../../stores/store_cart"
+    import axios from "axios";
 
     let invalidEmail = false;
     let invalidFname = false;
@@ -159,7 +160,25 @@
     function submitOrder() {
         let ret = validate();
         if (ret) {
-            alert("submit")
+            postOrder();
+        }
+    }
+
+    const url = 
+
+    async function postOrder() {
+        try {
+        const response = await axios.post(url, {
+            first_name,
+            last_name,
+            email,
+            phone_number
+        });
+
+        const { access: access_token } = response.data;
+        }
+        catch (error) {
+
         }
     }
 </script>
