@@ -15,7 +15,6 @@ class StoreList(APIView):
     def get(self, request):
         search_query = request.GET.get('q', None)
 
-        # Filter queryset based on name and type
         stores = Store.objects.all()
 
         # Filter queryset based on name or type
