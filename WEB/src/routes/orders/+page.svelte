@@ -1,5 +1,7 @@
 <script>
     import Cart from "../../components/Cart.svelte";
+    import Ongoing from "../../components/Ongoing.svelte";
+    import Past from "../../components/Past.svelte";
 	let activeTab = 0;
 </script>
 
@@ -17,9 +19,9 @@
 		{#if activeTab === 0}
 			<Cart />
 		{:else if activeTab === 1}
-			<!-- <Ongoing /> -->
+			<Ongoing />
 		{:else if activeTab === 2}
-			<!-- <Past /> -->
+			<Past />
 		{/if}
 	</section>
 </section>

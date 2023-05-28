@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { products } from "../../../stores/store_stores";
+    import { products } from "../../../stores/store_products";
     import ProductCard from "../../../components/ProductCard.svelte";
     import {PUBLIC_BASE_URL, PUBLIC_STORES_PATH} from '$env/static/public'
 
@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>ShopHub - Hddd Page</title>
+	<title>ShopHub - Products Page</title>
 </svelte:head>
 
 <section>

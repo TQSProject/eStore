@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { stores } from "../../stores/store_products";
+    import { stores } from "../../stores/store_stores";
     import StoreCard from "../../components/StoreCard.svelte";
     import {PUBLIC_BASE_URL, PUBLIC_STORES_PATH} from '$env/static/public'
 
