@@ -6,6 +6,8 @@
     import { account } from "../../stores/store_account";
     import { orders, orderPrice } from "../../stores/store_cart"
     import axios from "axios";
+    import { PUBLIC_ACPS_PATH, PUBLIC_ORDERS_PATH, PUBLIC_PICKUS_BASE_URL, PUBLIC_STORE_NAME } from "$env/static/public";
+    import { acps, acpIDs } from "../../stores/store_acps";
 
     let invalidEmail = false;
     let invalidFname = false;
@@ -16,8 +18,21 @@
     let subTotal = 0;
     let shipping = 0
 
+    let productList = [];
+
     orders.subscribe(value => {
         subTotal = $orderPrice
+        for (const key in value) {
+            if (value.hasOwnProperty(key)) {
+                const product = JSON.parse(key);
+                const count = value[key];
+                productList.push({
+                    name: product.name,
+                    // price: Number(product.price),
+                    count: count
+                });
+            }
+        }
     });
 
     let address = '';
@@ -34,14 +49,31 @@
 
     let previousPage = '/' ;
 
-    const options = [
-        "Address 1",
-        "Address 2",
-        "Address 3",
-        "Address 4",
-    ]
+    const acpsUrl = `${PUBLIC_PICKUS_BASE_URL}${PUBLIC_ACPS_PATH}?status=APPROVED`;
 
-    let filteredOptions = options;
+    let options = []
+    let filteredOptions = [];
+
+    onMount(async () => {
+        // Check if the user is already logged in
+        const newPage = '/login'
+        const access_token = getCookie('access_token')
+        if (!access_token) {
+            navigate(newPage)
+        }
+        else {
+            fetch(acpsUrl)
+            .then(response => response.json())
+            .then(data => {
+                acps.set(data);
+                options = filteredOptions = $acpIDs;
+            }).catch(error => {
+                console.log(error);
+                return [];
+            });
+        }
+    })
+
     let showDropdown = false;
     let selectedOption = ''
 
@@ -88,16 +120,6 @@
 
     afterNavigate(({from}) => {
         previousPage = from?.url.pathname || previousPage
-    })
-
-    onMount(() => {
-
-        // Check if the user is already logged in
-        const newPage = '/login'
-        const access_token = getCookie('access_token')
-        if (!access_token) {
-            navigate(newPage)
-        }
     })
 
     function checkAddress() {
@@ -164,18 +186,21 @@
         }
     }
 
-    const url = "";
+    const acpsOrders = `${PUBLIC_PICKUS_BASE_URL}${PUBLIC_ORDERS_PATH}`;
 
     async function postOrder() {
+        let [name, city] = address.split(',', 2);
         try {
-        const response = await axios.post(url, {
-            first_name,
-            last_name,
-            email,
-            phone_number
-        });
+            let postData = {
+                buyer: email,
+                acp: name,
+                store: PUBLIC_STORE_NAME,
+                products: productList
+            }
+            console.log(postData)
+            const response = await axios.post(acpsOrders, postData);
 
-        const data = response.data;
+            const data = response.data;
         }
         catch (error) {
 
@@ -214,12 +239,12 @@
                             </div>
                         </div>
                         <div class="form-wrapper" use:clickOutside on:click_outside={onAddressBlur}>
-                            <label class="form-label" for="address"> Address 1 </label>
+                            <label class="form-label" for="address"> Collection Point </label>
                             <svg class="search-icon" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M11.7867 3.75596C14.1397 6.10896 14.1397 9.92496 11.7867 12.278C9.43375 14.631 5.61775 14.631 3.26475 12.278C0.91175 9.92496 0.91175 6.10896 3.26475 3.75596C5.61775 1.40296 9.43375 1.40296 11.7867 3.75596V3.75596Z" stroke="#C3C6C8" stroke-width="2"/>
                                 <path d="M13.2271 13.708L17.6801 18.161" stroke="#C3C6C8" stroke-width="2"/>
                             </svg>                                
-                            <input class:error-input={invalidAddress} placeholder="Start typing your street address" type="text" class="form-input with-icon" id="address" required bind:value={address} on:input={filterOptions} on:focus={onAddressFocus} name="address" maxlength="50">
+                            <input class:error-input={invalidAddress} placeholder="Start typing your desired collection point" type="text" class="form-input with-icon" id="address" required bind:value={address} on:input={filterOptions} on:focus={onAddressFocus} name="address" maxlength="50">
                             {#if invalidAddress}<small class="error address-error">Invalid Address!</small>{/if}
                             {#if showDropdown}
                                 <div class="dropdown">
@@ -252,18 +277,18 @@
                     <div class="pre">
                         <div class="subtotal">
                             <span>Subtotal</span>
-                            <span>{subTotal}€</span>
+                            <span>{subTotal.toFixed(2)}€</span>
                         </div>
                         <div class="estimated-shipping">
                             <span>Estimated Shipping</span>
-                            <span>{shipping === 0 ? 'Free' : shipping}</span>
+                            <span>{shipping === 0 ? 'Free' : shipping.toFixed(2)}</span>
                         </div>
                     </div>
                     <hr class="divider">
                     <div class="final">
                         <div class="total">
                             <span>Total</span>
-                            <span>{subTotal + shipping}€</span>
+                            <span>{(subTotal + shipping).toFixed(2)}€</span>
                         </div>
                     </div>
                 </div>
