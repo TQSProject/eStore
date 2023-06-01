@@ -1,0 +1,24 @@
+version: '3'
+services:
+  django-api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - mynetwork
+    # Add any additional configuration specific to the Django API service
+
+  svelte-web-app:
+    build:
+      context: ./WEB
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - mynetwork
+    # Add any additional configuration specific to the Svelte web app service
+
+networks:
+  mynetwork:
